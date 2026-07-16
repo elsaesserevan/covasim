@@ -26,13 +26,14 @@ class variant(sc.prettyobj):
         n_imports   (int): the number of imports of the variant to be added
         rescale    (bool): whether the number of imports should be rescaled with the population
 
-    **Example**::
-
+    Examples:
+        ```
         alpha    = cv.variant('alpha', days=10) # Make the alpha variant B117 active from day 10
         p1      = cv.variant('p1', days=15) # Make variant P1 active from day 15
         my_var  = cv.variant(variant={'rel_beta': 2.5}, label='My variant', days=20)
         sim     = cv.Sim(variants=[alpha, p1, my_var]).run() # Add them all to the sim
         sim2    = cv.Sim(variants=cv.variant('alpha', days=0, n_imports=20), pop_infected=0).run() # Replace default variant with alpha
+        ```
     '''
 
     def __init__(self, variant, days, label=None, n_imports=1, rescale=True):

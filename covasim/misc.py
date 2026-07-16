@@ -107,10 +107,11 @@ def load(*args, do_migrate=True, update=True, verbose=True, **kwargs):
     Returns:
         Loaded object
 
-    **Examples**::
-
+    Examples:
+        ```
         sim = cv.load('calib.sim') # Equivalent to cv.Sim.load('calib.sim')
         scens = cv.load(filename='school-closures.scens', folder='schools')
+        ```
     '''
     obj = sc.loadobj(*args, **kwargs)
     if hasattr(obj, 'version'):
@@ -138,10 +139,11 @@ def save(*args, **kwargs):
     Returns:
         Filename the object is saved to
 
-    **Examples**::
-
+    Examples:
+        ```
         cv.save('calib.sim', sim) # Equivalent to sim.save('calib.sim')
         cv.save(filename='school-closures.scens', folder='schools', obj=scens)
+        ```
     '''
     filepath = sc.saveobj(*args, **kwargs)
     return filepath
@@ -163,10 +165,11 @@ def savefig(filename=None, comments=None, fig=None, **kwargs):
         fig      (fig/list): figure to save (by default, current one); can also be a list of figures
         kwargs   (dict):     passed to ``fig.savefig()``
 
-    **Example**::
-
+    Examples:
+        ```
         cv.Sim().run().plot()
         cv.savefig()
+        ```
     '''
 
     # Handle inputs
@@ -284,10 +287,11 @@ def migrate(obj, update=True, verbose=True, die=False):
     Returns:
         The migrated object
 
-    **Example**::
-
+    Examples:
+        ```
         sims = cv.load('my-list-of-sims.obj')
         sims = [cv.migrate(sim) for sim in sims]
+        ```
     '''
     from . import base as cvb # To avoid circular imports
     from . import run as cvr
@@ -415,12 +419,13 @@ def git_info(filename=None, check=False, comments=None, old_info=None, die=False
         frame     (int): how many frames back to look for caller info
         kwargs   (dict): passed to sc.loadjson() (if check=True) or sc.savejson() (if check=False)
 
-    **Examples**::
-
+    Examples:
+        ```
         cv.git_info() # Return information
         cv.git_info(__file__) # Writes to disk
         cv.git_info('covasim_version.gitinfo') # Writes to disk
         cv.git_info('covasim_version.gitinfo', check=True) # Checks that current version matches saved file
+        ```
     '''
 
     # Handle the case where __file__ is supplied as the argument
@@ -471,9 +476,10 @@ def check_version(expected, die=False, verbose=True):
         expected (str): expected version information
         die (bool): whether or not to raise an exception if the check fails
 
-    **Example**::
-
+    Examples:
+        ```
         cv.check_version('>=1.7.0', die=True) # Will raise an exception if an older version is used
+        ```
     '''
     if expected.startswith('>'):
         valid = 1
@@ -506,11 +512,12 @@ def check_save_version(expected=None, filename=None, die=False, verbose=True, **
         filename (str): file to save to; if None, guess based on current file name
         kwargs (dict): passed to git_info(), and thence to sc.savejson()
 
-    **Examples**::
-
+    Examples:
+        ```
         cv.check_save_version()
         cv.check_save_version('1.3.2', filename='script.gitinfo', comments='This is the main analysis script')
         cv.check_save_version('1.7.2', folder='gitinfo', comments={'SynthPops':sc.gitinfo(sp.__file__)})
+        ```
     '''
 
     # First, check the version if supplied
@@ -576,11 +583,12 @@ def get_png_metadata(filename, output=False):
     Args:
         filename (str): the name of the file to load the data from
 
-    **Example**::
-
+    Examples:
+        ```
         cv.Sim().run(do_plot=True)
         cv.savefig('covasim.png')
         cv.get_png_metadata('covasim.png')
+        ```
     '''
     try:
         import PIL
@@ -611,10 +619,11 @@ def get_doubling_time(sim, series=None, interval=None, start_day=None, end_day=N
     Alternate method to calculate doubling time (one is already implemented in
     the sim object).
 
-    **Examples**::
-
+    Examples:
+        ```
         cv.get_doubling_time(sim, interval=[3,30]) # returns the doubling time over the given interval (single float)
         cv.get_doubling_time(sim, interval=[3,30], moving_window=3) # returns doubling times calculated over moving windows (array)
+        ```
     '''
 
     # Set verbose level
@@ -725,8 +734,8 @@ def compute_gof(actual, predicted, normalize=True, use_frac=False, use_squared=F
     Returns:
         gofs (arr): array of goodness-of-fit values, or a single value if as_scalar is True
 
-    **Examples**::
-
+    Examples:
+        ```
         x1 = np.cumsum(np.random.random(100))
         x2 = np.cumsum(np.random.random(100))
 
@@ -735,6 +744,7 @@ def compute_gof(actual, predicted, normalize=True, use_frac=False, use_squared=F
         e3 = compute_gof(x1, x2, normalize=False, use_squared=True, as_scalar='mean') # Mean squared error
         e4 = compute_gof(x1, x2, skestimator='mean_squared_error') # Scikit-learn's MSE method
         e5 = compute_gof(x1, x2, as_scalar='median') # Normalized median absolute error -- highly robust
+        ```
     '''
 
     # Handle inputs
@@ -808,13 +818,13 @@ def help(pattern=None, source=False, ignorecase=True, flags=None, context=False,
         context    (bool): whether to show the line(s) of matches
         output     (bool): whether to return the dictionary of matches
 
-    **Examples**::
-
+    Examples:
+        ```
         cv.help()
         cv.help('vaccine')
         cv.help('contact', ignorecase=False, context=True)
         cv.help('lognormal', source=True, context=True)
-
+        ```
     | New in version 3.1.2.
     '''
     defaultmsg = '''

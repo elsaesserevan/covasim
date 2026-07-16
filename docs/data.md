@@ -33,7 +33,7 @@ Here is a sample of the data.
 | 57101 | Roane County, Tennessee, United States | 53382.0 | county | 3.0 |  |  |  | 131.0 |  |  | 2020-04-02 | 12 | 1.0 |  | 40.0 |  |  |  |  |
 | 57102 | Roane County, Tennessee, United States | 53382.0 | county | 3.0 |  |  |  | 150.0 |  |  | 2020-04-03 | 13 | 0.0 |  | 19.0 |  |  |  |  |
 
-**Updating:**: To update the Corona Data Scraper data,
+**Updating**: To update the Corona Data Scraper data,
 
 ``` bash
 python data/load_corona_data_scraper_data.py
@@ -68,7 +68,7 @@ Here is a sample of the data:
 | 3948 | 12  | 0             | 0         | Greenland | 56025.0    | 2020-04-01 |
 | 3947 | 13  | 0             | 0         | Greenland | 56025.0    | 2020-04-02 |
 
-**Updating:**: To update the Corona Data Scraper data,
+**Updating**: To update the Corona Data Scraper data,
 
 ``` bash
 python data/load_ecdp_data.py
@@ -99,7 +99,7 @@ We transform this data for use in the Covasim parameter format. It is stored in 
 | 1661 | 2020-03-16 | NY |  |  |  | 7.0 | 4.0 | 0.0 | 0.0 | 221.0 | 221.0 | 12 |  |  |
 | 1605 | 2020-03-17 | NY |  |  |  | 7.0 | 0.0 | 0.0 | 963.0 | 750.0 | 1713.0 | 13 |  |  |
 
-**Updating:**: To update the COVID Tracking Project data,
+**Updating**: To update the COVID Tracking Project data,
 
 ``` bash
 python data/load_covid_tracking_project_data.py

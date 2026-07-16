@@ -40,10 +40,11 @@ class Sim(cvb.BaseSim):
         version  (str):    if supplied, use default parameters from this version of Covasim instead of the latest
         kwargs   (dict):   additional parameters; passed to ``cv.make_pars()``
 
-    **Examples**::
-
+    Examples:
+        ```
         sim = cv.Sim()
         sim = cv.Sim(pop_size=10e3, datafile='my_data.xlsx', label='Sim with data')
+        ```
     '''
 
     def __init__(self, pars=None, datafile=None, label=None, simfile=None,
@@ -1084,12 +1085,13 @@ class Sim(cvb.BaseSim):
             sep    (str):     thousands separator (default ',')
             output (bool):    whether to return the summary instead of printing it
 
-        **Examples**::
-
+        Examples:
+            ```
             sim = cv.Sim(label='Example sim', verbose=0) # Set to run silently
             sim.run() # Run the sim
             sim.summarize() # Print medium-length summary of the sim
             sim.summarize(t=24, full=True) # Print a "slice" of all sim results on day 24
+            ```
         '''
         # Compute the summary
         summary = self.compute_summary(full=full, t=t, update=False, output=True)
@@ -1118,11 +1120,12 @@ class Sim(cvb.BaseSim):
         Args:
             output (bool): if true, return a string instead of printing output
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim(label='Example sim', verbose=0) # Set to run silently
             sim.run() # Run the sim
             sim.disp() # Displays detailed output
+            ```
         '''
         string = self._disp()
         if not output:
@@ -1140,11 +1143,12 @@ class Sim(cvb.BaseSim):
         Args:
             output (bool): if true, return a string instead of printing output
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim(label='Example sim', verbose=0) # Set to run silently
             sim.run() # Run the sim
             sim.brief() # Prints one-line output
+            ```
         '''
         string = self._brief()
         if not output:
@@ -1165,12 +1169,13 @@ class Sim(cvb.BaseSim):
         Returns:
             A Fit object
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim(datafile='data.csv')
             sim.run()
             fit = sim.compute_fit()
             fit.plot()
+            ```
         '''
         if not self.results_ready:
             errormsg = 'Cannot compute fit since results are not ready yet -- did you run the sim?'
@@ -1191,12 +1196,13 @@ class Sim(cvb.BaseSim):
         Returns:
             A Calibration object
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim(datafile='data.csv')
             calib_pars = dict(beta=[0.015, 0.010, 0.020])
             calib = sim.calibrate(calib_pars, n_trials=50)
             calib.plot()
+            ```
         '''
         calib = cva.Calibration(sim=self, calib_pars=calib_pars, **kwargs)
         calib.calibrate()
@@ -1216,12 +1222,13 @@ class Sim(cvb.BaseSim):
             args   (list): passed to cv.age_histogram()
             kwargs (dict): passed to cv.age_histogram()
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim()
             sim.run()
             agehist = sim.make_age_histogram()
             agehist.plot()
+            ```
         '''
         if not self.results_ready:
             errormsg = 'Cannot make age histogram since results are not ready yet -- did you run the sim?'
@@ -1244,11 +1251,12 @@ class Sim(cvb.BaseSim):
             args   (list): passed to cv.TransTree()
             kwargs (dict): passed to cv.TransTree()
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim()
             sim.run()
             tt = sim.make_transtree()
+            ```
         '''
         if not self.results_ready:
             errormsg = 'Cannot compute transmission tree since results are not ready yet -- did you run the sim?'
@@ -1294,18 +1302,18 @@ class Sim(cvb.BaseSim):
         The optional dictionary "date_args" allows several settings for controlling
         how the x-axis of plots are shown, if this axis is dates. These options are:
 
-            - ``as_dates``:   whether to format them as dates (else, format them as days since the start)
-            - ``dateformat``: string format for the date (if not provided, choose based on timeframe)
-            - ``rotation``:   whether to rotate labels
-            - ``start``:      the first day to plot
-            - ``end``:        the last day to plot
-            - ``outer``:      only show the date labels on the outer (bottom) plots
+        - ``as_dates``:   whether to format them as dates (else, format them as days since the start)
+        - ``dateformat``: string format for the date (if not provided, choose based on timeframe)
+        - ``rotation``:   whether to rotate labels
+        - ``start``:      the first day to plot
+        - ``end``:        the last day to plot
+        - ``outer``:      only show the date labels on the outer (bottom) plots
 
         The ``show_args`` dictionary allows several other formatting options, such as:
 
-            - ``tight``:    use tight layout for the figure (default false)
-            - ``maximize``: try to make the figure full screen (default false)
-            - ``outer``:    only show outermost (bottom) date labels (default false)
+        - ``tight``:    use tight layout for the figure (default false)
+        - ``maximize``: try to make the figure full screen (default false)
+        - ``outer``:    only show outermost (bottom) date labels (default false)
 
         Date, show, and other arguments can also be passed directly, e.g. ``sim.plot(tight=True)``.
 
@@ -1316,15 +1324,15 @@ class Sim(cvb.BaseSim):
         Returns:
             fig: Figure handle
 
-        **Examples**::
-
+       Examples:
+            ```
             sim = cv.Sim().run()
             sim.plot() # Default plotting
             sim.plot('overview') # Show overview
             sim.plot('overview', maximize=True, outer=True, rotation=15) # Make some modifications to make plots easier to see
             sim.plot(style='seaborn-whitegrid') # Use a built-in Matplotlib style
             sim.plot(style='simple', font='Rosario', dpi=200) # Use the other house style with several customizations
-
+            ```
         | New in version 2.1.0: argument passing, date_args, and mpl_args
         | New in version 3.1.2: updated date arguments; mpl_args renamed style_args
         '''
@@ -1343,10 +1351,11 @@ class Sim(cvb.BaseSim):
         Returns:
             fig: Figure handle
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim().run()
             sim.plot_result('r_eff')
+            ```
         '''
         fig = cvplt.plot_result(sim=self, key=key, *args, **kwargs)
         return fig
@@ -1366,13 +1375,14 @@ def diff_sims(sim1, sim2, skip_key_diffs=False, skip=None, output=False, die=Fal
         die (bool): whether to raise an exception if the sims don't match
         require_run (bool): require that the simulations have been run
 
-    **Example**::
-
+    Examples:
+        ```
         s1 = cv.Sim(beta=0.01)
         s2 = cv.Sim(beta=0.02)
         s1.run()
         s2.run()
         cv.diff_sims(s1, s2)
+        ```
     '''
 
     if isinstance(sim1, Sim):
@@ -1489,12 +1499,13 @@ def demo(preset=None, to_plot=None, scens=None, run_args=None, plot_args=None, *
         run_args (dict): passed to sim.run()
         plot_args (dict): passed to sim.plot()
 
-    **Examples**::
-
+    Examples:
+        ```
         cv.demo() # Simplest example
         cv.demo('full') # Full example
         cv.demo('full', overview=True) # Plot all results
         cv.demo(beta=0.020, run_args={'verbose':0}, plot_args={'to_plot':'overview'}) # Pass in custom values
+        ```
     '''
     from . import interventions as cvi # To avoid circular imports
     from . import run as cvr

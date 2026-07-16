@@ -96,11 +96,12 @@ def show_locations(location=None, output=False):
         location (str): if provided, only check if this location is in the list
         output (bool): whether to return the list (else print)
 
-    **Examples**::
-
+    Examples:
+        ```
         cv.data.show_locations() # Print a list of valid locations
         cv.data.show_locations('lithuania') # Check if Lithuania is a valid location
         cv.data.show_locations('Viet-Nam') # Check if Viet-Nam is a valid location
+        ```
     '''
     country_json   = sc.dcp(cad.data)
     state_json     = sc.dcp(sad.data)

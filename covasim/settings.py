@@ -1,13 +1,13 @@
 '''
 Define options for Covasim, mostly plotting and Numba options. All options should
-be set using set() or directly, e.g.::
-
+be set using set() or directly, e.g.
+    ```
     cv.options(font_size=18)
-
-To reset default options, use::
-
+    ```
+To reset default options, use
+    ```
     cv.options('default')
-
+    ```
 Note: "options" is used to refer to the choices available (e.g., DPI), while "settings"
 is used to refer to the choices made (e.g., DPI=150).
 '''
@@ -59,27 +59,27 @@ class Options(sc.objdict):
 
     Common options are (see also ``cv.options.help(detailed=True)``):
 
-        - verbose:        default verbosity for simulations to use
-        - style:          the plotting style to use
-        - dpi:            the overall DPI (i.e. size) of the figures
-        - font:           the font family/face used for the plots
-        - fontsize:       the font size used for the plots
-        - interactive:    convenience method to set show, close, and backend
-        - jupyter:        defaults for Jupyter (change backend and figure return)
-        - show:           whether to show figures
-        - close:          whether to close the figures
-        - backend:        which Matplotlib backend to use
-        - warnings:       how to handle warnings (e.g. print, raise as errors, ignore)
+    - verbose:        default verbosity for simulations to use
+    - style:          the plotting style to use
+    - dpi:            the overall DPI (i.e. size) of the figures
+    - font:           the font family/face used for the plots
+    - fontsize:       the font size used for the plots
+    - interactive:    convenience method to set show, close, and backend
+    - jupyter:        defaults for Jupyter (change backend and figure return)
+    - show:           whether to show figures
+    - close:          whether to close the figures
+    - backend:        which Matplotlib backend to use
+    - warnings:       how to handle warnings (e.g. print, raise as errors, ignore)
 
-    **Examples**::
-
+    Examples:
+        ```
         cv.options(dpi=150) # Larger size
         cv.options(style='simple', font='Rosario') # Change to the "simple" Covasim style with a custom font
         cv.options.set(fontsize=18, show=False, backend='agg', precision=64) # Multiple changes
         cv.options(interactive=False) # Turn off interactive plots
         cv.options(jupyter=True) # Defaults for Jupyter
         cv.options('defaults') # Reset to default options
-
+        ```
     | New in version 3.1.1: Jupyter defaults
     | New in version 3.1.2: Updated plotting styles; refactored options as a class
     '''
@@ -219,9 +219,10 @@ class Options(sc.objdict):
             use    (bool):   whether to immediately apply the change (to Matplotlib)
             kwargs (dict):   if supplied, set multiple key-value pairs
 
-        **Example**::
-
+        Examples:
+            ```
             cv.options.set(dpi=50) # Equivalent to cv.options(dpi=50)
+            ```
         '''
 
         reload_required = False
@@ -322,8 +323,8 @@ class Options(sc.objdict):
         to Matplotlib's context manager. If you set plotting options with this,
         they won't have any effect.
 
-        **Examples**::
-
+        Examples:
+            ```
             # Silence all output
             with cv.options.context(verbose=0):
                 cv.Sim().run()
@@ -335,7 +336,7 @@ class Options(sc.objdict):
             # Use with_style(), not context(), for plotting options
             with cv.options.with_style(dpi=50):
                 cv.Sim().run().plot()
-
+            ```
         New in version 3.1.2.
         '''
 
@@ -369,9 +370,10 @@ class Options(sc.objdict):
             detailed (bool): whether to print out full help
             output (bool): whether to return a list of the options
 
-        **Example**::
-
+        Examples:
+            ```
             cv.options.help(detailed=True)
+            ```
         '''
 
         # If not detailed, just print the docstring for cv.options
@@ -493,17 +495,18 @@ class Options(sc.objdict):
 
         Valid style arguments are:
 
-            - ``dpi``:       the figure DPI
-            - ``font``:      font (typeface)
-            - ``fontsize``:  font size
-            - ``grid``:      whether or not to plot gridlines
-            - ``facecolor``: color of the axes behind the plot
-            - any of the entries in ``pl.rParams``
+        - ``dpi``:       the figure DPI
+        - ``font``:      font (typeface)
+        - ``fontsize``:  font size
+        - ``grid``:      whether or not to plot gridlines
+        - ``facecolor``: color of the axes behind the plot
+        - any of the entries in ``pl.rParams``
 
-        **Examples**::
-
+        Examples:
+            ```
             with cv.options.with_style(dpi=300): # Use default options, but higher DPI
                 pl.plot([1,3,6])
+            ```
         '''
         # Handle inputs
         rc = sc.dcp(self.rc) # Make a local copy of the currently used settings
@@ -555,8 +558,8 @@ class Options(sc.objdict):
         '''
         Shortcut to set Covasim's current style as the global default.
 
-        **Example**::
-
+        Examples:
+            ```
             cv.options.use_style() # Set Covasim options as default
             pl.figure()
             pl.plot([1,3,7])
@@ -564,6 +567,7 @@ class Options(sc.objdict):
             pl.style.use('seaborn-whitegrid') # to something else
             pl.figure()
             pl.plot([3,1,4])
+            ```
         '''
         return self.with_style(use=True, **kwargs)
 
@@ -573,13 +577,14 @@ def reload_numba():
     Apply changes to Numba functions -- reloading modules is necessary for
     changes to propagate. Not necessary to call directly if cv.options.set() is used.
 
-    **Example**::
-
+    Examples:
+        ```
         import covasim as cv
         cv.options.set(precision=64)
         sim = cv.Sim()
         sim.run()
         assert sim.people.rel_trans.dtype == np.float64
+        ```
     '''
     print('Reloading Covasim so changes take effect...')
     import importlib

@@ -300,10 +300,11 @@ def absolute_prognoses(prognoses):
     ones. Used to convert internally used relative prognoses into more readable
     absolute ones.
 
-    **Example**::
-
+    Examples:
+        ```
         sim = cv.Sim()
         abs_progs = cv.parameters.absolute_prognoses(sim['prognoses'])
+        ```
     '''
     out = sc.dcp(prognoses)
     out['severe_probs'] *= out['symp_probs']   # Absolute probability of severe symptoms

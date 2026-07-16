@@ -125,12 +125,13 @@ class Result(object):
         color (str/arr): default color for plotting (hex or RGB notation)
         n_variants (int): the number of variants the result is for (0 for results not by variant)
 
-    **Example**::
-
+    Examples:
+        ```
         import covasim as cv
         r1 = cv.Result(name='test1', npts=10)
         r1[:5] = 20
         print(r1.values)
+        ```
     '''
 
     def __init__(self, name=None, npts=None, scale=True, color=None, n_variants=0):
@@ -363,9 +364,10 @@ class BaseSim(ParsObj):
         Returns:
             days (int or str): the day(s) in simulation time
 
-        **Example**::
-
+        Examples:
+            ```
             sim.day('2020-04-05') # Returns 35
+            ```
         '''
         return sc.day(day, *args, start_date=self['start_day'])
 
@@ -386,13 +388,14 @@ class BaseSim(ParsObj):
         Returns:
             dates (str, Date, or list): the date(s) corresponding to the simulation day(s)
 
-        **Examples**::
-
+        Examples:
+            ```
             sim = cv.Sim()
             sim.date(34) # Returns '2020-04-04'
             sim.date([34, 54]) # Returns ['2020-04-04', '2020-04-24']
             sim.date([34, '2020-04-24']) # Returns ['2020-04-04', '2020-04-24']
             sim.date(34, 54, as_date=True) # Returns [datetime.date(2020, 4, 4), datetime.date(2020, 4, 24)]
+            ```
         '''
 
         # Handle inputs
@@ -537,11 +540,12 @@ class BaseSim(ParsObj):
             A unicode string containing a JSON representation of the results,
             or writes the JSON file to disk
 
-        **Examples**::
-
+        Examples:
+            ```
             json = sim.to_json()
             sim.to_json('results.json')
             sim.to_json('summary.json', keys='summary')
+            ```
         '''
 
         # Handle keys
@@ -690,9 +694,10 @@ class BaseSim(ParsObj):
         Returns:
             filename (str): the validated absolute path to the saved file
 
-        **Example**::
-
+        Examples:
+            ```
             sim.save() # Saves to a .sim file
+            ```
         '''
 
         # Set keep_people based on whether or not we're in the middle of a run
@@ -730,9 +735,10 @@ class BaseSim(ParsObj):
         Returns:
             sim (Sim): the loaded simulation object
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim.load('my-simulation.sim')
+            ```
         '''
         sim = cvm.load(filename, *args, **kwargs)
         if not isinstance(sim, BaseSim): # pragma: no cover
@@ -817,8 +823,8 @@ class BaseSim(ParsObj):
             partial (bool): if true, return partial matches (e.g. 'beta' will match all beta interventions)
             as_inds (bool): if true, return matching indices instead of the actual interventions
 
-        **Examples**::
-
+        Examples:
+            ```
             tp = cv.test_prob(symp_prob=0.1)
             cb1 = cv.change_beta(days=5, changes=0.3, label='NPI')
             cb2 = cv.change_beta(days=10, changes=0.3, label='Masks')
@@ -827,6 +833,7 @@ class BaseSim(ParsObj):
             tp, cb2 = sim.get_interventions([0,2])
             ind = sim.get_interventions(cv.change_beta, as_inds=True) # Returns [1,2]
             sim.get_interventions('summary') # Prints a summary
+            ```
         '''
         return self._get_ia('interventions', label=label, partial=partial, as_inds=as_inds, as_list=True)
 
@@ -843,8 +850,8 @@ class BaseSim(ParsObj):
             first (bool): if true, return first matching intervention (otherwise, return last)
             die (bool): whether to raise an exception if no intervention is found
 
-        **Examples**::
-
+        Examples:
+            ```
             tp = cv.test_prob(symp_prob=0.1)
             cb = cv.change_beta(days=5, changes=0.3, label='NPI')
             sim = cv.Sim(interventions=[tp, cb])
@@ -854,6 +861,7 @@ class BaseSim(ParsObj):
             cb = sim.get_intervention(1)
             cb = sim.get_intervention()
             tp = sim.get_intervention(first=True)
+            ```
         '''
         return self._get_ia('interventions', label=label, partial=partial, first=first, die=die, as_inds=False, as_list=False)
 
@@ -1252,8 +1260,8 @@ class BasePeople(FlexPretty):
         Convert all people to a networkx MultiDiGraph, including all properties of
         the people (nodes) and contacts (edges).
 
-        **Example**::
-
+        Examples:
+            ```
             import covasim as cv
             import networkx as nx
             sim = cv.Sim(pop_size=50, pop_type='hybrid', contacts=dict(h=3, s=10, w=10, c=5)).run()
@@ -1265,6 +1273,7 @@ class BasePeople(FlexPretty):
             edge_colors = [layer_map[G[i][j][k]['layer']] for i,j,k in edges]
             edge_weights = [G[i][j][k]['beta']*5 for i,j,k in edges]
             nx.draw(G, node_color=node_colors, edge_color=edge_colors, width=edge_weights, alpha=0.5)
+            ```
         '''
         import networkx as nx
 
@@ -1298,11 +1307,12 @@ class BasePeople(FlexPretty):
         Returns:
             filename (str): the validated absolute path to the saved file
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim()
             sim.initialize()
             sim.people.save() # Saves to a .ppl file
+            ```
         '''
 
         # Check if we're trying to save an already run People object
@@ -1342,9 +1352,10 @@ use sim.people.save(force=True). Otherwise, the correct approach is:
         Returns:
             people (People): the loaded people object
 
-        **Example**::
-
+        Examples:
+            ```
             people = cv.people.load('my-people.ppl')
+            ```
         '''
         people = cvm.load(filename, *args, **kwargs)
         if not isinstance(people, BasePeople): # pragma: no cover
@@ -1553,10 +1564,11 @@ class Contacts(FlexDict):
         Small method to add one or more layers to the contacts. Layers should
         be provided as keyword arguments.
 
-        **Example**::
-
+        Examples:
+            ```
             hospitals_layer = cv.Layer(label='hosp')
             sim.people.contacts.add_layer(hospitals=hospitals_layer)
+            ```
         '''
         for lkey,layer in kwargs.items():
             if not isinstance(layer, Layer):
@@ -1575,10 +1587,10 @@ class Contacts(FlexDict):
         '''
         Remove the layer(s) from the contacts.
 
-        **Example**::
-
+        Examples:
+            ```
             sim.people.contacts.pop_layer('hospitals')
-
+            ```
         Note: while included here for convenience, this operation is equivalent
         to simply popping the key from the contacts dictionary.
         '''
@@ -1591,12 +1603,13 @@ class Contacts(FlexDict):
         '''
         Convert all layers to a networkx MultiDiGraph
 
-        **Example**::
-
+        Examples:
+            ```
             import networkx as nx
             sim = cv.Sim(pop_size=50, pop_type='hybrid').run()
             G = sim.people.contacts.to_graph()
             nx.draw(G)
+            ```
         '''
         import networkx as nx
         H = nx.MultiDiGraph()
@@ -1629,8 +1642,8 @@ class Layer(FlexDict):
     although not all have to be supplied at the time of creation (they must all
     be the same at the time of initialization, though, or else validation will fail).
 
-    **Examples**::
-
+    Examples:
+        ```
         # Generate an average of 10 contacts for 1000 people
         n = 10_000
         n_people = 1000
@@ -1644,7 +1657,7 @@ class Layer(FlexDict):
         index = np.arange(n)
         self_conn = p1 == p2
         layer2 = cv.Layer(**layer, index=index, self_conn=self_conn, label=layer.label)
-
+        ```
     New in version 3.1.2: allow a single dictionary input
     '''
 
@@ -1790,12 +1803,13 @@ class Layer(FlexDict):
         '''
         Convert to a networkx DiGraph
 
-        **Example**::
-
+        Examples:
+            ```
             import networkx as nx
             sim = cv.Sim(pop_size=20, pop_type='hybrid').run()
             G = sim.people.contacts['h'].to_graph()
             nx.draw(G)
+            ```
         '''
         import networkx as nx
         data = [np.array(self[k], dtype=dtype).tolist() for k,dtype in [('p1', int), ('p2', int), ('beta', float)]]
@@ -1825,9 +1839,12 @@ class Layer(FlexDict):
         Returns:
             contact_inds (array): a set of indices for pairing partners
 
-        Example: If there were a layer with
+        Examples:
+        If there were a layer with
+
         - P1 = [1,2,3,4]
         - P2 = [2,3,1,4]
+
         Then find_contacts([1,3]) would return {1,2,3}
         """
 

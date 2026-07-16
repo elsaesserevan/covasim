@@ -21,7 +21,7 @@ website:
     type: overlay
 
   page-footer:
-    center: "Docs built for Covasim v{{< var version >}} ({{< var versiondate >}}).<br>© 2020–2026, Bill & Melinda Gates Foundation. All rights reserved."
+    center: "Docs built for Covasim v{{< var version >}} ({{< var versiondate >}}).<br>© 2020–2026, Gates Foundation. All rights reserved."
     right:
       - icon: github
         href: https://github.com/starsimhub/covasim

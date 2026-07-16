@@ -146,11 +146,11 @@ def make_randpop(pars, use_age_data=True, use_household_data=True, sex_ratio=0.5
 
     This function returns a "popdict" dictionary, which has the following (required) keys:
 
-        - uid: an array of (usually consecutive) integers of length N, uniquely identifying each agent
-        - age: an array of floats of length N, the age in years of each agent
-        - sex: an array of integers of length N (not currently used, so does not have to be binary)
-        - contacts: list of length N listing the contacts; see make_random_contacts() for details
-        - layer_keys: a list of strings representing the different contact layers in the population; see make_random_contacts() for details
+    - uid: an array of (usually consecutive) integers of length N, uniquely identifying each agent
+    - age: an array of floats of length N, the age in years of each agent
+    - sex: an array of integers of length N (not currently used, so does not have to be binary)
+    - contacts: list of length N listing the contacts; see make_random_contacts() for details
+    - layer_keys: a list of strings representing the different contact layers in the population; see make_random_contacts() for details
 
     Args:
         pars (dict): the parameter dictionary or simulation object
@@ -379,11 +379,12 @@ def make_synthpop(sim=None, popdict=None, layer_mapping=None, community_contacts
         community_contacts (int): if a simulation is not supplied, create this many community contacts on average
         kwargs (dict): passed to sp.make_population()
 
-    **Example**::
-
+    Examples:
+        ```
         sim = cv.Sim(pop_type='synthpops')
         sim.popdict = cv.make_synthpop(sim)
         sim.run()
+        ```
     '''
     try:
         import synthpops as sp # Optional import

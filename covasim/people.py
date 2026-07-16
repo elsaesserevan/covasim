@@ -36,12 +36,13 @@ class People(cvb.BasePeople):
         strict (bool): whether or not to only create keys that are already in self.meta.person; otherwise, let any key be set
         kwargs (dict): the actual data, e.g. from a popdict, being specified
 
-    **Examples**::
-
+    Examples:
+        ```
         ppl1 = cv.People(2000)
 
         sim = cv.Sim()
         ppl2 = cv.People(sim.pars)
+        ```
     '''
 
     def __init__(self, pars, strict=True, **kwargs):
@@ -436,11 +437,11 @@ class People(cvb.BasePeople):
         '''
         Infect people and determine their eventual outcomes.
 
-            * Every infected person can infect other people, regardless of whether they develop symptoms
-            * Infected people that develop symptoms are disaggregated into mild vs. severe (=requires hospitalization) vs. critical (=requires ICU)
-            * Every asymptomatic, mildly symptomatic, and severely symptomatic person recovers
-            * Critical cases either recover or die
-            * If the simulation is being run with waning, this method also sets/updates agents' neutralizing antibody levels
+        * Every infected person can infect other people, regardless of whether they develop symptoms
+        * Infected people that develop symptoms are disaggregated into mild vs. severe (=requires hospitalization) vs. critical (=requires ICU)
+        * Every asymptomatic, mildly symptomatic, and severely symptomatic person recovers
+        * Critical cases either recover or die
+        * If the simulation is being run with waning, this method also sets/updates agents' neutralizing antibody levels
 
         Method also deduplicates input arrays in case one agent is infected many times
         and stores who infected whom in infection_log list.
@@ -671,12 +672,13 @@ class People(cvb.BasePeople):
             uid (int/list): the person or people whose story is being regaled
             args (list): these people will tell their stories too
 
-        **Example**::
-
+        Examples:
+            ```
             sim = cv.Sim(pop_type='hybrid', verbose=0)
             sim.run()
             sim.people.story(12)
             sim.people.story(795)
+            ```
         '''
 
         def label_lkey(lkey):

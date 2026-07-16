@@ -191,9 +191,10 @@ def InterventionDict(which, pars):
     Generate an intervention from a dictionary. Although a function, it acts
     like a class, since it returns a class instance.
 
-    **Example**::
-
+    Examples:
+        ```
         interv = cv.InterventionDict(which='change_beta', pars={'days': 30, 'changes': 0.5, 'layers': None})
+        ```
     '''
     mapping = dict(
         dynamic_pars    = dynamic_pars,
@@ -1157,12 +1158,12 @@ class simple_vaccine(Intervention):
     relative susceptibility and the probability of developing symptoms if still
     infected, this intervention stores several types of data:
 
-        - ``doses``:      the number of vaccine doses per person
-        - ``vaccination_dates``: list of dates per person
-        - ``orig_rel_sus``:      relative susceptibility per person at the beginning of the simulation
-        - ``orig_symp_prob``:    probability of developing symptoms per person at the beginning of the simulation
-        - ``mod_rel_sus``:       modifier on default susceptibility due to the vaccine
-        - ``mod_symp_prob``:     modifier on default symptom probability due to the vaccine
+    - ``doses``: the number of vaccine doses per person
+    - ``vaccination_dates``: list of dates per person
+    - ``orig_rel_sus``: relative susceptibility per person at the beginning of the simulation
+    - ``orig_symp_prob``: probability of developing symptoms per person at the beginning of the simulation
+    - ``mod_rel_sus``: modifier on default susceptibility due to the vaccine
+    - ``mod_symp_prob``: modifier on default symptom probability due to the vaccine
 
     Args:
         days (int or array): the day or array of days to apply the interventions
@@ -1176,10 +1177,11 @@ class simple_vaccine(Intervention):
     Note: this intervention is still under development and should be used with caution.
     It is intended for use with use_waning=False.
 
-    **Examples**::
-
+    Examples:
+        ```
         interv = cv.simple_vaccine(days=50, prob=0.3, rel_sus=0.5, rel_symp=0.1)
         interv = cv.simple_vaccine(days=[10,20,30,40], prob=0.8, rel_sus=0.5, cumulative=[1, 0.3, 0.1, 0]) # A vaccine with efficacy up to the 3rd dose
+        ```
     '''
     def __init__(self, days, prob=1.0, rel_sus=0.0, rel_symp=0.0, subtarget=None, cumulative=False, **kwargs):
         super().__init__(**kwargs) # Initialize the Intervention object
@@ -1258,40 +1260,38 @@ class BaseVaccination(Intervention):
     to modify `cv.People` and applications will likely need to modify the vaccine parameters and
     test potentially complex allocation strategies. These should be accounted for by:
 
-        - Custom vaccine parameters being passed in as a dictionary to the vaccine intervention
-        - Custom vaccine allocations being implemented by a derived class overloading
-          `BaseVaccination.select_people`. Any additional attributes required to manage the allocation
-          can be defined in the derived class. Refer to `cv.vaccinate` or `cv.vaccinate_sequential` for
-          an example of how to implement this.
+    - Custom vaccine parameters being passed in as a dictionary to the vaccine intervention
+    - Custom vaccine allocations being implemented by a derived class overloading
+        `BaseVaccination.select_people`. Any additional attributes required to manage the allocation
+        can be defined in the derived class. Refer to `cv.vaccinate` or `cv.vaccinate_sequential` for
+        an example of how to implement this.
 
     Some quantities are tracked during execution for reporting after running the simulation.
     These are:
 
-        - ``doses``:             the number of vaccine doses per person
-        - ``vaccination_dates``: integer; dates of all doses for this vaccine
+    - ``doses``: the number of vaccine doses per person
+    - ``vaccination_dates``: integer; dates of all doses for this vaccine
 
     Args:
-        vaccine (dict/str) : which vaccine to use; see below for dict parameters
-        label   (str)      : if vaccine is supplied as a dict, the name of the vaccine
-        booster (boolean)  : whether the vaccine is a booster, i.e. whether vaccinated people are eligible
-        kwargs  (dict)     : passed to Intervention()
+        vaccine (dict/str): which vaccine to use; see below for dict parameters
+        label (str): if vaccine is supplied as a dict, the name of the vaccine
+        booster (boolean): whether the vaccine is a booster, i.e. whether vaccinated people are eligible
+        kwargs (dict): passed to Intervention()
 
     If ``vaccine`` is supplied as a dictionary, it must have the following parameters:
 
-        EITHER
-        - ``nab_init``:  the initial antibody level (higher = more protection)
-        - ``nab_boost``: how much of a boost being vaccinated on top of a previous dose or natural infection provides
-        OR
-        - ``target_eff``: the target efficacy from which to calculate initial antibody and boosting.
-        must be supplied as a list, where length of list is equal to number of doses
-        - ``nab_eff``:   the waning efficacy of neutralizing antibodies at preventing infection
-        - ``doses``:     the number of doses required to be fully vaccinated with this vaccine
-        - ``interval``:  the interval between doses (integer)
-        - entries for efficacy against each of the variants (e.g. ``b117``)
+    EITHER
+    - ``nab_init``:  the initial antibody level (higher = more protection)
+    - ``nab_boost``: how much of a boost being vaccinated on top of a previous dose or natural infection provides
+    OR
+    - ``target_eff``: the target efficacy from which to calculate initial antibody and boosting.
+    must be supplied as a list, where length of list is equal to number of doses
+    - ``nab_eff``:   the waning efficacy of neutralizing antibodies at preventing infection
+    - ``doses``:     the number of doses required to be fully vaccinated with this vaccine
+    - ``interval``:  the interval between doses (integer)
+    - entries for efficacy against each of the variants (e.g. ``b117``)
 
     See ``parameters.py`` for additional examples of these parameters.
-
-
     '''
     def __init__(self, vaccine, label=None, **kwargs):
         super().__init__(**kwargs) # Initialize the Intervention object
@@ -1418,8 +1418,10 @@ class BaseVaccination(Intervention):
         """
         Return an array of indices of people to vaccinate
         Derived classes must implement this function to determine who to vaccinate at each timestep
+    
         Args:
             sim: A cv.Sim instance
+    
         Returns: Array of person indices
         """
         raise NotImplementedError
@@ -1586,19 +1588,20 @@ class vaccinate_prob(BaseVaccination):
 
     If ``vaccine`` is supplied as a dictionary, it must have the following parameters:
 
-        - ``nab_eff``:   the waning efficacy of neutralizing antibodies at preventing infection
-        - ``nab_init``:  the initial antibody level (higher = more protection)
-        - ``nab_boost``: how much of a boost being vaccinated on top of a previous dose or natural infection provides
-        - ``doses``:     the number of doses required to be fully vaccinated
-        - ``interval``:  the interval between doses (integer)
-        - entries for efficacy against each of the strains (e.g. ``b117``)
+    - ``nab_eff``: the waning efficacy of neutralizing antibodies at preventing infection
+    - ``nab_init``: the initial antibody level (higher = more protection)
+    - ``nab_boost``: how much of a boost being vaccinated on top of a previous dose or natural infection provides
+    - ``doses``: the number of doses required to be fully vaccinated
+    - ``interval``: the interval between doses (integer)
+    - entries for efficacy against each of the strains (e.g. ``b117``)
 
     See ``parameters.py`` for additional examples of these parameters.
 
-    **Example**::
-
+    Examples:
+        ```
         pfizer = cv.vaccinate_prob(vaccine='pfizer', days=30, prob=0.7)
         cv.Sim(interventions=pfizer, use_waning=True).run().plot()
+        ```
     '''
     def __init__(self, vaccine, days, label=None, prob=None, subtarget=None, booster=False, **kwargs):
         super().__init__(vaccine,label=label,**kwargs) # Initialize the Intervention object
@@ -1675,25 +1678,29 @@ class vaccinate_num(BaseVaccination):
         subtarget  (dict): subtarget intervention to people with particular indices (see test_num() for details)
         sequence: Specify the order in which people should get vaccinated. This can be
 
-            - An array of person indices in order of vaccination priority
-            - A callable that takes in `cv.People` and returns an ordered sequence. For example, to
-              vaccinate people in descending age order, ``def age_sequence(people): return np.argsort(-people.age)``
-              would be suitable.
-            - The shortcut 'age', which does prioritization by age (see below for implementation)
-              If not specified, people will be randomly ordered.
+        - An array of person indices in order of vaccination priority
+        - A callable that takes in `cv.People` and returns an ordered sequence. For example, to
+            vaccinate people in descending age order, ``def age_sequence(people): return np.argsort(-people.age)``
+            would be suitable.
+        - The shortcut 'age', which does prioritization by age (see below for implementation)
+            If not specified, people will be randomly ordered.
+
         num_doses: Specify the number of doses per day. This can take three forms
 
-            - A scalar number of doses per day
-            - A dict keyed by day/date with the number of doses e.g. ``{2:10000, '2021-05-01':20000}``.
-              Any dates are converted to simulation days in `initialize()` which will also copy the
-              dictionary passed in.
-            - A callable that takes in a ``cv.Sim`` and returns a scalar number of doses. For example,
-              ``def doses(sim): return 100 if sim.t > 10 else 0`` would be suitable
+        - A scalar number of doses per day
+        - A dict keyed by day/date with the number of doses e.g. ``{2:10000, '2021-05-01':20000}``.
+            Any dates are converted to simulation days in `initialize()` which will also copy the
+            dictionary passed in.
+        - A callable that takes in a ``cv.Sim`` and returns a scalar number of doses. For example,
+            ``def doses(sim): return 100 if sim.t > 10 else 0`` would be suitable
+    
         **kwargs: Additional arguments passed to ``cv.BaseVaccination``
 
-    **Example**::
+    Examples:
+        ```
         pfizer = cv.vaccinate_num(vaccine='pfizer', sequence='age', num_doses=100)
         cv.Sim(interventions=pfizer, use_waning=True).run().plot()
+        ```
     '''
 
     def __init__(self, vaccine, num_doses, booster=False, subtarget=None, sequence=None, **kwargs):
@@ -1800,11 +1807,11 @@ def prior_immunity(*args, **kwargs):
     Wrapper function for ``historical_wave`` and ``historical_vaccinate_prob``. If the ``vaccine`` keyword is
     present then ``historical_vaccinate_prob`` will be used. Otherwise ``historical_wave`` is used.
 
-    **Examples**::
-
+    Examples:
+        ```
         pim1 = cv.prior_immunity(vaccine='pfizer', days=[-30], prob=0.7)
         pim2 = cv.prior_immunity(120, 0.05)
-
+        ```
     New in version 3.1.0.
     '''
 
@@ -1838,20 +1845,20 @@ class historical_vaccinate_prob(BaseVaccination):
 
     If ``vaccine`` is supplied as a dictionary, it must have the following parameters:
 
-        - ``nab_eff``:   the waning efficacy of neutralizing antibodies at preventing infection
-        - ``nab_init``:  the initial antibody level (higher = more protection)
-        - ``nab_boost``: how much of a boost being vaccinated on top of a previous dose or natural infection provides
-        - ``doses``:     the number of doses required to be fully vaccinated
-        - ``interval``:  the interval between doses
-        - entries for efficacy against each of the strains (e.g. ``b117``)
+    - ``nab_eff``:   the waning efficacy of neutralizing antibodies at preventing infection
+    - ``nab_init``:  the initial antibody level (higher = more protection)
+    - ``nab_boost``: how much of a boost being vaccinated on top of a previous dose or natural infection provides
+    - ``doses``:     the number of doses required to be fully vaccinated
+    - ``interval``:  the interval between doses
+    - entries for efficacy against each of the strains (e.g. ``b117``)
 
     See ``parameters.py`` for additional examples of these parameters.
 
-    **Example**::
-
+    Examples:
+        ```
         pfizer = cv.historical_vaccinate_prob(vaccine='pfizer', days=np.arange(-30,0), prob=0.007) # 30-day vaccination campaign
         cv.Sim(interventions=pfizer).run().plot()
-
+        ```
     New in version 3.1.0.
     '''
     def __init__(self,  vaccine, days, label=None, prob=1.0, subtarget=None, compliance=1.0, **kwargs):
@@ -1995,9 +2002,10 @@ class historical_vaccinate_prob(BaseVaccination):
             duration: length of campign in days
             coverage: target coverage of campaign
 
-        **Example**::
-
+        Examples:
+            ```
             prob = historical_vaccinate.estimate_prob(duration=180, coverage=0.70)
+            ```
         '''
         from scipy import optimize, special # Not used elsewhere, and can't import scipy as sp
         
@@ -2032,9 +2040,10 @@ class historical_wave(Intervention):
         variants   (str/list)     : name of variant associated with the wave
         kwargs     (dict)         : passed to Intervention()
 
-    **Example**::
+    Examples:
+        ```
         cv.Sim(interventions=cv.historical_wave(120, 0.30)).run().plot()
-
+        ```
     New in version 3.1.0.
     '''
 

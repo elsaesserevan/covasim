@@ -182,12 +182,12 @@ def sample(dist=None, par1=None, par2=None, size=None, **kwargs):
     Returns:
         A length N array of samples
 
-    **Examples**::
-
+    Examples:
+        ```
         cv.sample() # returns Unif(0,1)
         cv.sample(dist='normal', par1=3, par2=0.5) # returns Normal(μ=3, σ=0.5)
         cv.sample(dist='lognormal_int', par1=5, par2=3) # returns a lognormally distributed set of values with mean 5 and std 3
-
+        ```
     Notes:
         Lognormal distributions are parameterized with reference to the underlying normal distribution (see:
         https://docs.scipy.org/doc/numpy-1.14.0/reference/generated/numpy.random.lognormal.html), but this
@@ -319,9 +319,10 @@ def n_binomial(prob, n):
     Returns:
         Boolean array of which trials succeeded
 
-    **Example**::
-
+    Examples:
+        ```
         outcomes = cv.n_binomial(0.5, 100) # Perform 100 coin-flips
+        ```
     '''
     return np.random.random(n) < prob
 
@@ -338,9 +339,10 @@ def binomial_filter(prob, arr): # No speed gain from Numba
     Returns:
         Subset of array for which trials succeeded
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.binomial_filter(0.5, np.arange(20)**2) # Return which values out of the (arbitrary) array passed the coin flip
+        ```
     '''
     return arr[(np.random.random(len(arr)) < prob).nonzero()[0]]
 
@@ -355,9 +357,10 @@ def binomial_arr(prob_arr):
     Returns:
          Boolean array of which trials on the input array succeeded
 
-    **Example**::
-
+    Examples:
+        ```
         outcomes = cv.binomial_arr([0.1, 0.1, 0.2, 0.2, 0.8, 0.8]) # Perform 6 trials with different probabilities
+        ```
     '''
     return np.random.random(len(prob_arr)) < prob_arr
 
@@ -373,9 +376,10 @@ def n_multinomial(probs, n): # No speed gain from Numba
     Returns:
         Array of integer outcomes
 
-    **Example**::
-
+    Examples:
+        ```
         outcomes = cv.multinomial(np.ones(6)/6.0, 50)+1 # Return 50 die-rolls
+        ```
     '''
     return np.searchsorted(np.cumsum(probs), np.random.random(n))
 
@@ -388,9 +392,10 @@ def poisson(rate):
     Args:
         rate (float): the rate of the Poisson process
 
-    **Example**::
-
+    Examples:
+        ```
         outcome = cv.poisson(100) # Single Poisson trial with mean 100
+        ```
     '''
     return np.random.poisson(rate, 1)[0]
 
@@ -404,9 +409,10 @@ def n_poisson(rate, n):
         rate (float): the rate of the Poisson process (mean)
         n (int): number of trials
 
-    **Example**::
-
+    Examples:
+        ```
         outcomes = cv.n_poisson(100, 20) # 20 Poisson trials with mean 100
+        ```
     '''
     return np.random.poisson(rate, n)
 
@@ -421,10 +427,11 @@ def n_neg_binomial(rate, dispersion, n, step=1): # Numba not used due to incompa
         n (int): number of trials
         step (float): the step size to use if non-integer outputs are desired
 
-    **Example**::
-
+    Examples:
+        ```
         outcomes = cv.n_neg_binomial(100, 1, 50) # 50 negative binomial trials with mean 100 and dispersion roughly equal to mean (large-mean limit)
         outcomes = cv.n_neg_binomial(1, 100, 20) # 20 negative binomial trials with mean 1 and dispersion still roughly equal to mean (approximately Poisson)
+        ```
     '''
     nbn_n = dispersion
     nbn_p = dispersion/(rate/step + dispersion)
@@ -441,9 +448,10 @@ def choose(max_n, n):
         max_n (int): the total number of items
         n (int): the number of items to choose
 
-    **Example**::
-
+    Examples:
+        ```
         choices = cv.choose(5, 2) # choose 2 out of 5 people with equal probability (without repeats)
+        ```
     '''
     return np.random.choice(max_n, n, replace=False)
 
@@ -457,9 +465,10 @@ def choose_r(max_n, n):
         max_n (int): the total number of items
         n (int): the number of items to choose
 
-    **Example**::
-
+    Examples:
+        ```
         choices = cv.choose_r(5, 10) # choose 10 out of 5 people with equal probability (with repeats)
+        ```
     '''
     return np.random.choice(max_n, n, replace=True)
 
@@ -473,9 +482,10 @@ def choose_w(probs, n, unique=True): # No performance gain from Numba
         n (int): number of samples to choose
         unique (bool): whether or not to ensure unique indices
 
-    **Example**::
-
+    Examples:
+        ```
         choices = cv.choose_w([0.2, 0.5, 0.1, 0.1, 0.1], 2) # choose 2 out of 5 people with nonequal probability.
+        ```
     '''
     probs = np.array(probs)
     n_choices = len(probs)
@@ -504,9 +514,10 @@ def true(arr):
     Args:
         arr (array): any array
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.true(np.array([1,0,0,1,1,0,1])) # Returns array([0, 3, 4, 6])
+        ```
     '''
     return arr.nonzero()[0]
 
@@ -518,9 +529,10 @@ def false(arr):
     Args:
         arr (array): any array
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.false(np.array([1,0,0,1,1,0,1]))
+        ```
     '''
     return np.logical_not(arr).nonzero()[0]
 
@@ -532,9 +544,10 @@ def defined(arr):
     Args:
         arr (array): any array
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.defined(np.array([1,np.nan,0,np.nan,1,0,1]))
+        ```
     '''
     return (~np.isnan(arr)).nonzero()[0]
 
@@ -546,9 +559,10 @@ def undefined(arr):
     Args:
         arr (array): any array
 
-    **Example**::
-
+    Examples:
+        ``` 
         inds = cv.defined(np.array([1,np.nan,0,np.nan,1,0,1]))
+        ```
     '''
     return np.isnan(arr).nonzero()[0]
 
@@ -561,9 +575,10 @@ def itrue(arr, inds):
         arr (array): a Boolean array, used as a filter
         inds (array): any other array (usually, an array of indices) of the same size
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.itrue(np.array([True,False,True,True]), inds=np.array([5,22,47,93]))
+        ```
     '''
     return inds[arr]
 
@@ -576,9 +591,10 @@ def ifalse(arr, inds):
         arr (array): a Boolean array, used as a filter
         inds (array): any other array (usually, an array of indices) of the same size
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.ifalse(np.array([True,False,True,True]), inds=np.array([5,22,47,93]))
+        ```
     '''
     return inds[np.logical_not(arr)]
 
@@ -591,9 +607,10 @@ def idefined(arr, inds):
         arr (array): any array, used as a filter
         inds (array): any other array (usually, an array of indices) of the same size
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.idefined(np.array([3,np.nan,np.nan,4]), inds=np.array([5,22,47,93]))
+        ```
     '''
     return inds[~np.isnan(arr)]
 
@@ -606,9 +623,10 @@ def iundefined(arr, inds):
         arr (array): any array, used as a filter
         inds (array): any other array (usually, an array of indices) of the same size
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.iundefined(np.array([3,np.nan,np.nan,4]), inds=np.array([5,22,47,93]))
+        ```
     '''
     return inds[np.isnan(arr)]
 
@@ -622,9 +640,10 @@ def itruei(arr, inds):
         arr (array): a Boolean array, used as a filter
         inds (array): an array of indices for the original array
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.itruei(np.array([True,False,True,True,False,False,True,False]), inds=np.array([0,1,3,5]))
+        ```
     '''
     return inds[arr[inds]]
 
@@ -637,9 +656,10 @@ def ifalsei(arr, inds):
         arr (array): a Boolean array, used as a filter
         inds (array): an array of indices for the original array
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.ifalsei(np.array([True,False,True,True,False,False,True,False]), inds=np.array([0,1,3,5]))
+        ```
     '''
     return inds[np.logical_not(arr[inds])]
 
@@ -652,9 +672,10 @@ def idefinedi(arr, inds):
         arr (array): any array, used as a filter
         inds (array): an array of indices for the original array
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.idefinedi(np.array([4,np.nan,0,np.nan,np.nan,4,7,4,np.nan]), inds=np.array([0,1,3,5]))
+        ```
     '''
     return inds[~np.isnan(arr[inds])]
 
@@ -667,8 +688,9 @@ def iundefinedi(arr, inds):
         arr (array): any array, used as a filter
         inds (array): an array of indices for the original array
 
-    **Example**::
-
+    Examples:
+        ```
         inds = cv.iundefinedi(np.array([4,np.nan,0,np.nan,np.nan,4,7,4,np.nan]), inds=np.array([0,1,3,5]))
+        ```
     '''
     return inds[np.isnan(arr[inds])]

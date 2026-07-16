@@ -1,9 +1,10 @@
 '''
 Set the defaults across each of the different files.
 
-To change the default precision from 32 bit (default) to 64 bit, use::
-
+To change the default precision from 32 bit (default) to 64 bit, use
+    ```
     cv.options.set(precision=64)
+    ```
 '''
 
 import numpy as np

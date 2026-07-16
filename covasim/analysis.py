@@ -159,8 +159,8 @@ class snapshot(Analyzer):
         kwargs (dict): passed to Analyzer()
 
 
-    **Example**::
-
+    Examples:
+        ```
         sim = cv.Sim(analyzers=cv.snapshot('2020-04-04', '2020-04-14'))
         sim.run()
         snapshot = sim['analyzers'][0]
@@ -169,6 +169,7 @@ class snapshot(Analyzer):
         people = snapshot.get('2020-04-14')       # Option 3
         people = snapshot.get(34)                 # Option 4
         people = snapshot.get()                   # Option 5
+        ```
     '''
 
     def __init__(self, days, *args, die=True, **kwargs):
@@ -236,14 +237,15 @@ class age_histogram(Analyzer):
         die     (bool): whether to raise an exception if dates are not found (default true)
         kwargs  (dict): passed to Analyzer()
 
-    **Examples**::
-
+    Examples:
+        ```
         sim = cv.Sim(analyzers=cv.age_histogram())
         sim.run()
 
         agehist = sim.get_analyzer()
         agehist = cv.age_histogram(sim=sim) # Alternate method
         agehist.plot()
+        ```
     '''
 
     def __init__(self, days=None, states=None, edges=None, datafile=None, sim=None, die=True, **kwargs):
@@ -435,15 +437,15 @@ class daily_age_stats(Analyzer):
         edges   (list): edges of age bins to use (default: 10 year bins from 0 to 100)
         kwargs  (dict): passed to Analyzer()
 
-    **Examples**::
-
+    Examples:
+        ```
         sim = cv.Sim(analyzers=cv.daily_age_stats())
         sim = cv.Sim(pars, analyzers=daily_age)
         sim.run()
         daily_age = sim.get_analyzer()
         daily_age.plot()
         daily_age.plot(total=True)
-
+        ```
     '''
 
     def __init__(self, states=None, edges=None, **kwargs):
@@ -599,11 +601,12 @@ class daily_stats(Analyzer):
         reporter (func): if supplied, a custom parser of the stats object into a report (see make_report() function for syntax)
         save_inds (bool): whether to save the indices of every infection at every timestep (also recoverable from the infection log)
 
-    **Example**::
-
+    Examples:
+        ```
         sim = cv.Sim(analyzers=cv.daily_stats())
         sim.run()
         sim['analyzers'][0].plot()
+        ```
     '''
 
     def __init__(self, days=None, verbose=True, reporter=None, save_inds=False, **kwargs):
@@ -907,12 +910,12 @@ class nab_histogram(Analyzer):
         days (list): days on which calculate the NAb histogram (if None, assume last day)
         edges (list): log10 bin edges for histogram
 
-    **Example**::
-
+    Examples:
+        ```
         sim = cv.Sim(analyzers=cv.nab_histogram())
         sim.run()
         sim.get_analyzer().plot()
-
+        ```
     New in version 3.1.0.
     '''
     def __init__(self, days=None, edges=None, **kwargs):
@@ -993,12 +996,12 @@ class Fit(Analyzer):
     A class for calculating the fit between the model and the data. Note the
     following terminology is used here:
 
-        - fit: nonspecific term for how well the model matches the data
-        - difference: the absolute numerical differences between the model and the data (one time series per result)
-        - goodness-of-fit: the result of passing the difference through a statistical function, such as mean squared error
-        - loss: the goodness-of-fit for each result multiplied by user-specified weights (one time series per result)
-        - mismatches: the sum of all the losses (a single scalar value per time series)
-        - mismatch: the sum of the mismatches -- this is the value to be minimized during calibration
+    - fit: nonspecific term for how well the model matches the data
+    - difference: the absolute numerical differences between the model and the data (one time series per result)
+    - goodness-of-fit: the result of passing the difference through a statistical function, such as mean squared error
+    - loss: the goodness-of-fit for each result multiplied by user-specified weights (one time series per result)
+    - mismatches: the sum of all the losses (a single scalar value per time series)
+    - mismatch: the sum of the mismatches -- this is the value to be minimized during calibration
 
     Args:
         sim (Sim): the sim object
@@ -1011,12 +1014,13 @@ class Fit(Analyzer):
         label (str): the label for the analyzer
         kwargs (dict): passed to cv.compute_gof() -- see this function for more detail on goodness-of-fit calculation options
 
-    **Example**::
-
+    Examples:
+        ```
         sim = cv.Sim(datafile='my-data-file.csv')
         sim.run()
         fit = sim.compute_fit()
         fit.plot()
+        ```
     '''
 
     def __init__(self, sim, weights=None, keys=None, custom=None, compute=True, verbose=False, die=True, label=None, **kwargs):
@@ -1387,14 +1391,14 @@ class Calibration(Analyzer):
     Returns:
         A Calibration object
 
-    **Example**::
-
+    Examples:
+        ```
         sim = cv.Sim(datafile='data.csv')
         calib_pars = dict(beta=[0.015, 0.010, 0.020])
         calib = cv.Calibration(sim, calib_pars, total_trials=100)
         calib.calibrate()
         calib.plot()
-
+        ```
     New in version 3.0.3.
     '''
 
@@ -1781,14 +1785,14 @@ class TransTree(Analyzer):
         sim (Sim): the sim object
         to_networkx (bool): whether to convert the graph to a NetworkX object
 
-    **Example**::
-
+    Examples:
+        ```
         sim = cv.Sim().run()
         sim.run()
         tt = sim.make_transtree()
         tt.plot()
         tt.plot_histograms()
-
+        ```
     New in version 2.1.0: ``tt.detailed`` is a dataframe rather than a list of dictionaries;
     for the latter, use ``tt.detailed.to_dict('records')``.
     '''

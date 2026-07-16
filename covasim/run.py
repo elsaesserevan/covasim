@@ -50,8 +50,8 @@ class MultiSim(cvb.FlexPretty):
     Returns:
         msim: a MultiSim object
 
-    **Examples**::
-
+    Examples:
+        ```
         sim = cv.Sim() # Create the sim
         msim = cv.MultiSim(sim, n_runs=5) # Create the multisim
         msim.run() # Run them in parallel
@@ -68,6 +68,7 @@ class MultiSim(cvb.FlexPretty):
         for sim in sims: sim.run() # Run sims in serial
         msim = cv.MultiSim(sims) # Convert to multisim
         msim.plot() # Plot as single sim
+        ```
     '''
 
     def __init__(self, sims=None, base_sim=None, label=None, initialize=False, **kwargs):
@@ -151,10 +152,11 @@ class MultiSim(cvb.FlexPretty):
         Returns:
             None (modifies MultiSim object in place)
 
-        **Examples**::
-
+        Examples:
+            ```
             msim.run()
             msim.run(run_args=dict(until='2020-0601', restore_pars=False))
+            ```
         '''
         # Handle which sims to use -- same as init_sims()
         if self.sims is None:
@@ -230,12 +232,13 @@ class MultiSim(cvb.FlexPretty):
             bounds (float): if use_mean=True, the multiplier on the standard deviation for upper and lower bounds (default 2)
             output (bool): whether to return the "reduced" sim (in any case, modify the multisim in-place)
 
-        **Example**::
-
+        Examples:
+            ```
             msim = cv.MultiSim(cv.Sim())
             msim.run()
             msim.reduce()
             msim.summarize()
+            ```
         '''
 
         if use_mean:
@@ -329,12 +332,13 @@ class MultiSim(cvb.FlexPretty):
         '''
         Combine multiple sims into a single sim with scaled results.
 
-        **Example**::
-
+        Examples:
+            ```
             msim = cv.MultiSim(cv.Sim())
             msim.run()
             msim.combine()
             msim.summarize()
+            ```
         '''
 
         n_runs = len(self)
@@ -458,14 +462,15 @@ class MultiSim(cvb.FlexPretty):
         Returns:
             fig: Figure handle
 
-        **Examples**::
-
+        Examples:
+            ```
             sim = cv.Sim()
             msim = cv.MultiSim(sim)
             msim.run()
             msim.plot() # Plots individual sims
             msim.reduce()
             msim.plot() # Plots the combined sim
+            ```
         '''
 
         # Plot a single curve, possibly with a range
@@ -603,9 +608,10 @@ class MultiSim(cvb.FlexPretty):
         Returns:
             scenfile (str): the validated absolute path to the saved file
 
-        **Example**::
-
+        Examples:
+            ```
             msim.save() # Saves to an .msim file
+            ```
         '''
         if filename is None:
             filename = 'covasim.msim'
@@ -644,9 +650,10 @@ class MultiSim(cvb.FlexPretty):
         Returns:
             msim (MultiSim): the loaded MultiSim object
 
-        **Example**::
-
+        Examples:
+            ```
             msim = cv.MultiSim.load('my-multisim.msim')
+            ```
         '''
         msim = cvm.load(msimfile, *args, **kwargs)
         if not isinstance(msim, MultiSim):
@@ -667,10 +674,11 @@ class MultiSim(cvb.FlexPretty):
         Returns:
             msim (MultiSim): a new MultiSim object
 
-        **Examples**:
-
+        Examples:
+            ```
             mm1 = cv.MultiSim.merge(msim1, msim2, base=True)
             mm2 = cv.MultiSim.merge([m1, m2, m3, m4], base=False)
+            ```
         '''
 
         # Handle arguments
@@ -713,8 +721,8 @@ class MultiSim(cvb.FlexPretty):
         Returns:
             A list of MultiSim objects
 
-        **Examples**::
-
+        Examples:
+            ```
             m1 = cv.MultiSim(cv.Sim(label='sim1'), initialize=True)
             m2 = cv.MultiSim(cv.Sim(label='sim2'), initialize=True)
             m3 = cv.MultiSim.merge(m1, m2)
@@ -726,6 +734,7 @@ class MultiSim(cvb.FlexPretty):
             m1, m2 = msim.split(inds=[[0,2,4], [1,3,5]])
             mlist1 = msim.split(chunks=[2,4]) # Equivalent to inds=[[0,1], [2,3,4,5]]
             mlist2 = msim.split(chunks=2) # Equivalent to inds=[[0,1,2], [3,4,5]]
+            ```
         '''
 
         # Process indices and chunks
@@ -763,11 +772,12 @@ class MultiSim(cvb.FlexPretty):
         Args:
             output (bool): if true, return a string instead of printing output
 
-        **Example**::
-
+        Examples:
+            ```
             msim = cv.MultiSim(cv.Sim(verbose=0), label='Example multisim')
             msim.run()
             msim.disp() # Displays detailed output
+            ```
         '''
         string = self._disp()
         if not output:
@@ -784,11 +794,12 @@ class MultiSim(cvb.FlexPretty):
         Args:
             output (bool): if true, return a string instead of printing output
 
-        **Example**::
-
+        Examples:
+            ```
             msim = cv.MultiSim(cv.Sim(verbose=0), label='Example multisim')
             msim.run()
             msim.summarize() # Prints moderate length output
+            ```
         '''
         labelstr = f' "{self.label}"' if self.label else ''
         simlenstr = f'{len(self.sims)}' if self.sims else '0'
@@ -829,11 +840,12 @@ class MultiSim(cvb.FlexPretty):
         Args:
             output (bool): if true, return a string instead of printing output
 
-        **Example**::
-
+        Examples:
+            ```
             msim = cv.MultiSim(cv.Sim(verbose=0), label='Example multisim')
             msim.run()
             msim.brief() # Prints one-line output
+            ```
          '''
         string = self._brief()
         if not output:
@@ -873,12 +885,13 @@ class Scenarios(cvb.ParsObj):
         scenfile  (str)  : a filename for saving (defaults to the creation date)
         label     (str)  : the name of the scenarios
 
-    **Example**::
-
-        scens = cv.Scenarios()
-
     Returns:
         scens: a Scenarios object
+
+    Examples:
+        ``
+        scens = cv.Scenarios()
+        ```
     '''
 
     def __init__(self, sim=None, metapars=None, scenarios=None, basepars=None, scenfile=None, label=None):
@@ -1048,12 +1061,13 @@ class Scenarios(cvb.ParsObj):
             t (int/str)   : the day (or date) to do the comparison; default, the end
             output (bool) : if true, return the dataframe instead of printing output
 
-        **Example**::
-
+        Examples:
+            ```
             scenarios = {'base': {'name':'Base','pars': {}}, 'beta': {'name':'Beta', 'pars': {'beta': 0.020}}}
             scens = cv.Scenarios(scenarios=scenarios, label='Example scenarios')
             scens.run()
             scens.compare(t=30) # Prints comparison for day 30
+            ```
         '''
 
         # Handle time
@@ -1096,12 +1110,12 @@ class Scenarios(cvb.ParsObj):
         Returns:
             fig: Figure handle
 
-
-        **Example**::
-
+        Examples:
+            ```
             scens = cv.Scenarios()
             scens.run()
             scens.plot()
+            ```
         '''
         return cvpl.plot_scens(scens=self, *args, **kwargs)
 
@@ -1116,7 +1130,6 @@ class Scenarios(cvb.ParsObj):
         Returns:
             A unicode string containing a JSON representation of the results,
             or writes the JSON file to disk
-
         '''
         d = {'t':self.tvec,
              'results':   self.results,
@@ -1142,7 +1155,6 @@ class Scenarios(cvb.ParsObj):
 
         Returns:
             An sc.Spreadsheet with an Excel file, or writes the file to disk
-
         '''
         spreadsheet = sc.Spreadsheet()
         spreadsheet.freshbytes()
@@ -1173,10 +1185,10 @@ class Scenarios(cvb.ParsObj):
         Returns:
             scenfile (str): the validated absolute path to the saved file
 
-        **Example**::
-
+        Examples:
+            ``
             scens.save() # Saves to a .scens file with the date and time of creation by default
-
+            ```
         '''
         if scenfile is None:
             scenfile = self.scenfile
@@ -1223,9 +1235,10 @@ class Scenarios(cvb.ParsObj):
         Returns:
             scens (Scenarios): the loaded scenarios object
 
-        **Example**::
-
+        Examples:
+            ```
             scens = cv.Scenarios.load('my-scenarios.scens')
+            ```
         '''
         scens = cvm.load(scenfile, *args, **kwargs)
         if not isinstance(scens, Scenarios):
@@ -1242,11 +1255,12 @@ class Scenarios(cvb.ParsObj):
         Args:
             output (bool): if true, return a string instead of printing output
 
-        **Example**::
-
+        Examples:
+            ```
             scens = cv.Scenarios(cv.Sim(), label='Example scenarios')
             scens.run(verbose=0) # Run silently
             scens.disp() # Displays detailed output
+            ```
         '''
         string = self._disp()
         if not output:
@@ -1263,11 +1277,12 @@ class Scenarios(cvb.ParsObj):
         Args:
             output (bool): if true, return a string instead of printing output
 
-        **Example**::
-
+        Examples:
+            ```
             scens = cv.Scenarios(cv.Sim(), label='Example scenarios')
             scens.run(verbose=0) # Run silently
             scens.summarize() # Prints moderate length output
+            ```
         '''
         labelstr = f' "{self.label}"' if self.label else ''
         string  = f'Scenarios{labelstr} summary:\n'
@@ -1310,11 +1325,12 @@ class Scenarios(cvb.ParsObj):
         Args:
             output (bool): if true, return a string instead of printing output
 
-        **Example**::
-
+        Examples:
+            ```
             scens = cv.Scenarios(label='Example scenarios')
             scens.run()
             scens.brief() # Prints one-line output
+            ```
          '''
         string = self._brief()
         if not output:
@@ -1344,11 +1360,12 @@ def single_run(sim, ind=0, reseed=True, noise=0.0, noisepar=None, keep_people=Fa
     Returns:
         sim (Sim): a single sim object with results
 
-    **Example**::
-
+    Examples:
+        ```
         import covasim as cv
         sim = cv.Sim() # Create a default simulation
         sim = cv.single_run(sim) # Run it, equivalent(ish) to sim.run()
+        ```
     '''
 
     # Set sim and run arguments
@@ -1433,11 +1450,12 @@ def multi_run(sim, n_runs=4, reseed=None, noise=0.0, noisepar=None, iterpars=Non
         If combine is True, a single sim object with the combined results from each sim.
         Otherwise, a list of sim objects (default).
 
-    **Example**::
-
+    Examples:
+        ```
         import covasim as cv
         sim = cv.Sim()
         sims = cv.multi_run(sim, n_runs=6, noise=0.2)
+        ```
     '''
 
     # Handle inputs
@@ -1531,13 +1549,13 @@ def parallel(*args, **kwargs):
     Returns:
         A run MultiSim object.
 
-    **Examples**::
-
+    Examples:
+        ```
         s1 = cv.Sim(beta=0.01, label='Low')
         s2 = cv.Sim(beta=0.02, label='High')
         cv.parallel(s1, s2).plot()
         msim = cv.parallel([s1, s2], keep_people=True)
-
+        ```
     New in version 3.1.1.
     '''
     sims = sc.mergelists(*args)
